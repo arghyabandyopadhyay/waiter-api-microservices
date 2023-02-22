@@ -2,8 +2,8 @@ package com.ArghyaBandyopadhyay.waiterrapi.transactionservice.controller;
 
 import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.model.Transaction;
 import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.service.TransactionService;
-import com.ArghyaBandyopadhyay.moneynmonetary.transactionservice.util.exception.CustomerNotExistsException;
-import com.ArghyaBandyopadhyay.moneynmonetary.transactionservice.util.exception.TransactionAlreadyExistsException;
+import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.util.exception.CustomerNotExistsException;
+import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.util.exception.TransactionAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
