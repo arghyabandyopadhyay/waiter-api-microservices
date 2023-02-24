@@ -1,6 +1,6 @@
-package com.ArghyaBandyopadhyay.waiterrapi.transactionservice.repository;
+package com.ArghyaBandyopadhyay.waiterrapi.customerbank.repository;
 
-import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.model.Transaction;
+import com.ArghyaBandyopadhyay.waiterrapi.customerbank.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

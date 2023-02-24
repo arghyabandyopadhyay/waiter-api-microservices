@@ -1,4 +1,4 @@
-package com.ArghyaBandyopadhyay.waiterrapi.transactionservice.model;
+package com.ArghyaBandyopadhyay.waiterrapi.customerbank.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

@@ -1,4 +1,4 @@
-package com.ArghyaBandyopadhyay.waiterrapi.transactionservice.util.exception;
+package com.ArghyaBandyopadhyay.waiterrapi.customerbank.util.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

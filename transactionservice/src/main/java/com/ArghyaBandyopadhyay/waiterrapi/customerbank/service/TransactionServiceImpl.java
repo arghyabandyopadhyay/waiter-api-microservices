@@ -1,11 +1,11 @@
-package com.ArghyaBandyopadhyay.waiterrapi.transactionservice.service;
+package com.ArghyaBandyopadhyay.waiterrapi.customerbank.service;
 
 
-import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.model.Customer;
-import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.model.Transaction;
-import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.repository.TransactionsRepository;
-import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.util.exception.CustomerNotExistsException;
-import com.ArghyaBandyopadhyay.waiterrapi.transactionservice.util.exception.TransactionAlreadyExistsException;
+import com.ArghyaBandyopadhyay.waiterrapi.customerbank.model.Customer;
+import com.ArghyaBandyopadhyay.waiterrapi.customerbank.model.Transaction;
+import com.ArghyaBandyopadhyay.waiterrapi.customerbank.repository.TransactionsRepository;
+import com.ArghyaBandyopadhyay.waiterrapi.customerbank.util.exception.CustomerNotExistsException;
+import com.ArghyaBandyopadhyay.waiterrapi.customerbank.util.exception.TransactionAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
