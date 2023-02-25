@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,8 +27,8 @@ public class CustomerBankServiceImplementation implements CustomerBankService {
     public CustomerDetails addCustomerDetail(CustomerDetails customerDetails) throws CustomerAlreadyExistsException{
         CustomerDetails added = null;
         try{
-            if(customerDetails.getId()==null)throw new EntityNotFoundException();
-            customerBankRepository.getReferenceById(customerDetails.getId());
+            Optional<CustomerDetails> temp=customerBankRepository.findByMobileNumber(customerDetails.getMobileNumber());
+            if(temp.isEmpty())throw new EntityNotFoundException();
             throw new CustomerAlreadyExistsException();
         }catch(EntityNotFoundException e){
             added = customerBankRepository.save(customerDetails);
