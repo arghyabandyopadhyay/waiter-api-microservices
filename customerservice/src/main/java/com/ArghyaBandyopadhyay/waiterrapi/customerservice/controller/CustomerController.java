@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200/")
-@RequestMapping("api/v1/customers")
+@RequestMapping("api/v1/waiterr/customers")
 public class CustomerController {
     /*
      * Autowiring should be implemented for the NewsService. Please note that we
