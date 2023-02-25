@@ -5,7 +5,6 @@ import com.ArghyaBandyopadhyay.waiterrapi.customerbank.model.CustomerDetails;
 import com.ArghyaBandyopadhyay.waiterrapi.customerbank.util.exception.CustomerAlreadyExistsException;
 import com.ArghyaBandyopadhyay.waiterrapi.customerbank.util.exception.CustomerNotExistsException;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface CustomerBankService {
