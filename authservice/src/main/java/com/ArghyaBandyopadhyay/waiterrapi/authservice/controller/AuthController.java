@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200/")
-@RequestMapping("api/v1/authentication")
+@RequestMapping("api/v1/waiterr/authentication")
 public class AuthController {
     /*
      * Autowiring should be implemented for the NewsService. Please note that we
