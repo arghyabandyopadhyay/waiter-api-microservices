@@ -9,37 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200/")
-@RequestMapping("api/v1/payments")
+@RequestMapping("api/v1/waiterr/customerbank")
 public class CustomerBankController {
     @Autowired
     CustomerBankService customerBankService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerDetails(@PathVariable ("id") UUID id) {
+    @GetMapping()
+    public ResponseEntity<?> getCustomerDetails(@RequestParam(name="identifier",required = false) UUID id, @RequestParam(name="mobile", required = false) String mobileNo) {
         CustomerDetails customerDetail = null;
         try {
-            customerDetail = customerBankService.getCustomerDetail(id);
+            if(id==null && mobileNo==null)throw new CustomerNotExistsException();
+            customerDetail = id!=null?customerBankService.getCustomerDetail(id):customerBankService.getCustomerDetailUsingMobileNo(mobileNo);
             return new ResponseEntity<>(customerDetail, HttpStatus.OK);
         } catch (CustomerNotExistsException e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    @GetMapping("/")
-    public ResponseEntity<?> getCustomerDetailsUsingMobile(@RequestParam("mobileNo") String mobileNo) {
-        CustomerDetails customerDetail = null;
-        try {
-            customerDetail = customerBankService.getCustomerDetailUsingMobileNo(mobileNo);
-            return new ResponseEntity<>(customerDetail, HttpStatus.OK);
-        } catch (CustomerNotExistsException e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Customer with specified details not found",HttpStatus.NOT_FOUND);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,9 +36,9 @@ public class CustomerBankController {
     public ResponseEntity<?> addCustomerDetails(@RequestBody() CustomerDetails customerDetails){
         try {
             CustomerDetails newCustomerDetails = customerBankService.addCustomerDetail(customerDetails);
-            return new ResponseEntity<CustomerDetails>(newCustomerDetails,HttpStatus.CREATED);
+            return new ResponseEntity<>(newCustomerDetails,HttpStatus.CREATED);
         } catch (CustomerAlreadyExistsException e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Customer already exists",HttpStatus.CONFLICT);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,22 +49,22 @@ public class CustomerBankController {
     public ResponseEntity<?> updateCustomerDetails(@RequestBody() CustomerDetails customerDetails){
         try {
             customerBankService.updateCustomerDetail(customerDetails);
-            return new ResponseEntity<String>("User Details updated successfully",HttpStatus.OK);
+            return new ResponseEntity<>("User Details updated successfully",HttpStatus.OK);
         } catch (CustomerNotExistsException e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Customer with specified details not found",HttpStatus.NOT_FOUND);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomerDetails(@PathVariable("id") UUID id){
+    @DeleteMapping()
+    public ResponseEntity<?> deleteCustomerDetails(@RequestParam(name="identifier") UUID id){
         try {
             customerBankService.deleteCustomerDetail(id);
-            return new ResponseEntity<String>("User detail deleted successfully",HttpStatus.OK);
+            return new ResponseEntity<>("User detail deleted successfully",HttpStatus.OK);
         } catch (CustomerNotExistsException e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Customer with specified details not found",HttpStatus.NOT_FOUND);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
