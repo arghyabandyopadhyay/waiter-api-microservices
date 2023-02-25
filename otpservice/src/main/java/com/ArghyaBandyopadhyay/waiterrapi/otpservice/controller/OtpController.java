@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200/")
-@RequestMapping("api/v1/otp")
+@RequestMapping("api/v1/waiterr/otp")
 public class OtpController {
     /*
      * Autowiring should be implemented for the NewsService. Please note that we
