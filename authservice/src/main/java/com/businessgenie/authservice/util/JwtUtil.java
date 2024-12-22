@@ -14,8 +14,8 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    private final String secret="syUSkHwbzDJp8TCLpt2msCODsm6VnmTu3sY2EinlUDWHguNNJOyqg0kT6xlWKGIAzX/jxsx5hRTs63pvCB18I3xhtGJIif9SyRpkh1BXibI9mB6pkupxUMcE1VvS+JBRXm67h7GTYNMRwtxxLbRSDZyZq5bY8WKvrayEjrvGZeUgKuO0vjvWrbnZiPA3E6v2vtnQ5O7PUYupSPTa0S2BG+yQ0GUH4uD1pWgVNeXEIgPwBCDRjBpI9NzSCKCaKjL2qGQHWiCJxEobBwnU/zCi8zeFkkZZ5ZbAThjwBNqx80ZkZcn+DVBX/XTB+Txe35c12INitFKcRrttIWjNDywA";
-
+    @Value("${jwt.secret}")
+    private String secret;
     public String extractEmailId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
