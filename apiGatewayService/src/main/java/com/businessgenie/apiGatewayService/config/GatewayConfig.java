@@ -19,6 +19,10 @@ public class GatewayConfig {
                 .route("WaiterrUsersService", r -> r.path("/api/v1/users/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://WaiterrUsersService"))
+                
+                .route("WaiterrUserClientAllocationsService", r -> r.path("/api/v1/userclientallocations/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrUserClientAllocationsService"))
 
                  .route("WaiterrOtpService", r -> r.path("/api/v1/otp/**")
                          .filters(f -> f.filter(filter))
