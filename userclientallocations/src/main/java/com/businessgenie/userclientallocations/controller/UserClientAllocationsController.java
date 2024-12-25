@@ -1,7 +1,9 @@
 package com.businessgenie.userclientallocations.controller;
 
+import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.service.UserClientAllocationsService;
+import com.businessgenie.userclientallocations.util.UserClientAllocationConverter;
 import com.businessgenie.userclientallocations.util.exception.NoUserClientAllocationExistsException;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationAlreadyExistsException;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationNotExistsException;
@@ -34,10 +36,11 @@ public class UserClientAllocationsController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUser(@PathVariable("userId") String userId) {
-        List<UserClientAllocation> userClientAllocations = null;
+        List<UserClientAllocationForUserDTO> userClientAllocations = null;
         try {
             userClientAllocations = userClientAllocationsService.getAllUserClientAllocationForUser(userId);
-            return new ResponseEntity<>(userClientAllocations, HttpStatus.OK);
+
+            return new ResponseEntity<>(UserClientAllocationConverter.convertAndGroupByClientId(userClientAllocations), HttpStatus.OK);
         } catch (NoUserClientAllocationExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

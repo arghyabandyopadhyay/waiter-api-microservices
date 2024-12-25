@@ -1,5 +1,6 @@
 package com.businessgenie.userclientallocations.service;
 
+import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.repository.UserClientAllocationsRepository;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationAlreadyExistsException;
@@ -50,14 +51,14 @@ public class UserClientAllocationsServiceImpl implements UserClientAllocationsSe
     @Override
     public UserClientAllocation createUserClientAllocation(UserClientAllocation userClientAllocation)
             throws UserClientAllocationAlreadyExistsException {
-        if(userClientAllocationsRepository.findUserClientAllocation(userClientAllocation.getUserId(), userClientAllocation.getCompanyGUID(), userClientAllocation.getOutletId()) == null)
+        if(userClientAllocationsRepository.findUserClientAllocation(userClientAllocation.getUserId(), userClientAllocation.getOutletId()) == null)
             return userClientAllocationsRepository.save(userClientAllocation);
         else throw new UserClientAllocationAlreadyExistsException();
     }
 
 
     @Override
-    public List<UserClientAllocation> getAllUserClientAllocationForUser(String userId)
+    public List<UserClientAllocationForUserDTO> getAllUserClientAllocationForUser(String userId)
             throws NoUserClientAllocationExistsException {
                 return userClientAllocationsRepository.findByUserId(userId);
             }

@@ -1,5 +1,6 @@
 package com.businessgenie.clientservice.service;
 
+import com.businessgenie.clientservice.dto.ClientUserAllocationDTO;
 import com.businessgenie.clientservice.model.Clients;
 import com.businessgenie.clientservice.repository.ClientsRepository;
 import com.businessgenie.clientservice.util.exception.ClientAlreadyExistsException;
@@ -53,6 +54,13 @@ public class ClientServiceImpl implements ClientService {
         if(clientsRepository.findClient(client.getName(), client.getAddress()) == null)
             return clientsRepository.save(client);
         else throw new ClientAlreadyExistsException();
+    }
+
+
+    @Override
+    public List<ClientUserAllocationDTO> getAllWaiter(String clientId) throws NoClientExistsException {
+        List<ClientUserAllocationDTO> temp= clientsRepository.findAllWaiters(clientId);
+        return temp;
     }
     
 }

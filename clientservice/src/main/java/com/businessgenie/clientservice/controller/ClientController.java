@@ -1,5 +1,6 @@
 package com.businessgenie.clientservice.controller;
 
+import com.businessgenie.clientservice.dto.ClientUserAllocationDTO;
 import com.businessgenie.clientservice.model.Clients;
 import com.businessgenie.clientservice.service.ClientService;
 import com.businessgenie.clientservice.util.exception.NoClientExistsException;
@@ -38,6 +39,17 @@ public class ClientController {
             client = clientService.getClient(id);
             return new ResponseEntity<>(client, HttpStatus.OK);
         } catch (ClientNotExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/waiter/{clientId}")
+    public ResponseEntity<?> getAllWaiter(@PathVariable("clientId") String clientId) {
+        List<ClientUserAllocationDTO> waiters = null;
+        try {
+            waiters = clientService.getAllWaiter(clientId);
+            return new ResponseEntity<>(waiters, HttpStatus.OK);
+        } catch (NoClientExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }

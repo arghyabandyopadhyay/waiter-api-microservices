@@ -1,6 +1,7 @@
 package com.businessgenie.userclientallocations.service;
 
 
+import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.util.exception.NoUserClientAllocationExistsException;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationAlreadyExistsException;
@@ -15,7 +16,7 @@ public interface UserClientAllocationsService {
     public List<UserClientAllocation> getAllUserClientAllocations() throws NoUserClientAllocationExistsException;
 
     public UserClientAllocation getUserClientAllocation(UUID uuid) throws UserClientAllocationNotExistsException;
-    public List<UserClientAllocation> getAllUserClientAllocationForUser(String userId) throws NoUserClientAllocationExistsException;
+    public List<UserClientAllocationForUserDTO> getAllUserClientAllocationForUser(String userId) throws NoUserClientAllocationExistsException;
     public UserClientAllocation updateUserClientAllocation(UserClientAllocation users)  throws UserClientAllocationNotExistsException;
 
     public void deleteUserClientAllocation(UUID uuid) throws UserClientAllocationNotExistsException;
