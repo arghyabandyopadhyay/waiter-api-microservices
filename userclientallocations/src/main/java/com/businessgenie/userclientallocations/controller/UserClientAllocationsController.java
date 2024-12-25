@@ -3,6 +3,7 @@ package com.businessgenie.userclientallocations.controller;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.service.UserClientAllocationsService;
 import com.businessgenie.userclientallocations.util.exception.NoUserClientAllocationExistsException;
+import com.businessgenie.userclientallocations.util.exception.UserClientAllocationAlreadyExistsException;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationNotExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +53,18 @@ public class UserClientAllocationsController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/")
+    public ResponseEntity<?> createUserClientAllocation(@RequestBody() UserClientAllocation userClientAllocation){
+        try {
+            UserClientAllocation newUserClientAllocation = userClientAllocationsService.createUserClientAllocation(userClientAllocation);
+            return new ResponseEntity<>(newUserClientAllocation,HttpStatus.OK);
+        } catch (UserClientAllocationAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PutMapping("/update")
-    public ResponseEntity<?> putUser(@RequestBody() UserClientAllocation userClientAllocation){
+    public ResponseEntity<?> putUserClientAllocation(@RequestBody() UserClientAllocation userClientAllocation){
         try {
             UserClientAllocation upldatedUserClientAllocation = userClientAllocationsService.updateUserClientAllocation(userClientAllocation);
             return new ResponseEntity<>(upldatedUserClientAllocation,HttpStatus.OK);

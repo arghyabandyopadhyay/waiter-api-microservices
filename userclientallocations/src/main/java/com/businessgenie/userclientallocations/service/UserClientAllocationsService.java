@@ -5,7 +5,6 @@ import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.util.exception.NoUserClientAllocationExistsException;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationAlreadyExistsException;
 import com.businessgenie.userclientallocations.util.exception.UserClientAllocationNotExistsException;
-
 import java.util.List;
 import java.util.UUID;
 

@@ -31,6 +31,38 @@ public class GatewayConfig {
                  .route("WaiterrAuthenticationService", r -> r.path("/api/v1/authentication/**")
                          .filters(f -> f.filter(filter))
                          .uri("lb://WaiterrAuthenticationService"))
+
+                .route("WaiterrMaxTakeAwayService", r -> r.path("/api/v1/maxtakeaway/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrMaxTakeAwayService"))
+
+                .route("WaiterrClientService", r -> r.path("/api/v1/client/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrClientService"))
+                        
+                .route("WaiterrMenuGroupService", r -> r.path("/api/v1/menugroup/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrMenuGroupService"))
+
+                .route("WaiterrMenuItemService", r -> r.path("/api/v1/menu/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrMenuItemService"))
+
+                .route("WaiterrOrderService", r -> r.path("/api/v1/orders/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrOrderService"))
+
+                .route("WaiterrOutletService", r -> r.path("/api/v1/outlets/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrOutletService"))
+
+                .route("WaiterrRunningOrderService", r -> r.path("/api/v1/runningorders/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrRunningOrderService"))
+
+                .route("WaiterrTaxClassService", r -> r.path("/api/v1/taxclass/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WaiterrTaxClassService"))
                 .build();
     }
 

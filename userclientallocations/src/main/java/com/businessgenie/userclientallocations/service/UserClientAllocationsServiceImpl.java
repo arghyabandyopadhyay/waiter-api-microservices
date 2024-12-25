@@ -50,13 +50,15 @@ public class UserClientAllocationsServiceImpl implements UserClientAllocationsSe
     @Override
     public UserClientAllocation createUserClientAllocation(UserClientAllocation userClientAllocation)
             throws UserClientAllocationAlreadyExistsException {
-        return userClientAllocationsRepository.save(userClientAllocation);
+        if(userClientAllocationsRepository.findUserClientAllocation(userClientAllocation.getUserId(), userClientAllocation.getCompanyGUID(), userClientAllocation.getOutletId()) == null)
+            return userClientAllocationsRepository.save(userClientAllocation);
+        else throw new UserClientAllocationAlreadyExistsException();
     }
 
 
     @Override
     public List<UserClientAllocation> getAllUserClientAllocationForUser(String userId)
             throws NoUserClientAllocationExistsException {
-                return userClientAllocationsRepository.findForUserId(userId);
+                return userClientAllocationsRepository.findByUserId(userId);
             }
 }
