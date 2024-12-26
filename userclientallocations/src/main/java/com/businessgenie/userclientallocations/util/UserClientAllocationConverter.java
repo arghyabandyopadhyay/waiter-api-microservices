@@ -13,7 +13,7 @@ public class UserClientAllocationConverter {
 
     public static List<CustomUserClientAllocation> convertAndGroupByClientId(List<UserClientAllocationForUserDTO> dtos) {
         // Group by clientId
-        Map<UUID, List<UserClientAllocationForUserDTO>> groupedByClientId = dtos.stream()
+        Map<String, List<UserClientAllocationForUserDTO>> groupedByClientId = dtos.stream()
                 .collect(Collectors.groupingBy(UserClientAllocationForUserDTO::getClientId));
 
         // Convert to List<CustomUserClientAllocation>

@@ -1,5 +1,7 @@
 package com.businessgenie.runningorderservice.controller;
 
+import com.businessgenie.runningorderservice.constants.OrderType;
+import com.businessgenie.runningorderservice.dto.RunningModelUserDetailOutletDetailDTO;
 import com.businessgenie.runningorderservice.model.RunningOrder;
 import com.businessgenie.runningorderservice.service.RunningOrderService;
 import com.businessgenie.runningorderservice.util.exception.NoRunningOrderExistsException;
@@ -31,11 +33,33 @@ public class RunningOrderController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getRunningOrdersForUser(@PathVariable("userId") String userId) {
-        List<RunningOrder> runningOrders = null;
+    @GetMapping("/user/{userId}/{OrderType}")
+    public ResponseEntity<?> getRunningOrdersForUser(@PathVariable("userId") String userId, @PathVariable("OrderType") OrderType orderType) {
+        List<RunningModelUserDetailOutletDetailDTO> runningOrders = null;
         try {
-            runningOrders = runningOrderService.getAllRunningOrdersForUser(userId);
+            runningOrders = runningOrderService.getAllRunningOrdersForUser(userId, orderType);
+            return new ResponseEntity<>(runningOrders, HttpStatus.OK);
+        } catch (NoRunningOrderExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<?> getRunningOrdersForClient(@PathVariable("clientId") String clientId) {
+        List<RunningModelUserDetailOutletDetailDTO> runningOrders = null;
+        try {
+            runningOrders = runningOrderService.getAllRunningOrdersForClient(clientId);
+            return new ResponseEntity<>(runningOrders, HttpStatus.OK);
+        } catch (NoRunningOrderExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/activesalepoint/{clientId}/{outletName}/{salePointName}/{salePointType}")
+    public ResponseEntity<?> getRunningOrdersForActiveSalePoint(@PathVariable("clientId") String clientId, @PathVariable("outletName") String outletName, @PathVariable("salePointName") String salePointName, @PathVariable("salePointType") String salePointType) {
+        List<RunningModelUserDetailOutletDetailDTO> runningOrders = null;
+        try {
+            runningOrders = runningOrderService.getAllRunningOrdersInOutletSalePointNameForClient(clientId, outletName, salePointName, salePointType);
             return new ResponseEntity<>(runningOrders, HttpStatus.OK);
         } catch (NoRunningOrderExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

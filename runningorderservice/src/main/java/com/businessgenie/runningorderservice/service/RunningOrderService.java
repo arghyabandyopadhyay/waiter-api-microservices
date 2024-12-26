@@ -1,5 +1,7 @@
 package com.businessgenie.runningorderservice.service;
 
+import com.businessgenie.runningorderservice.constants.OrderType;
+import com.businessgenie.runningorderservice.dto.RunningModelUserDetailOutletDetailDTO;
 import com.businessgenie.runningorderservice.model.RunningOrder;
 import com.businessgenie.runningorderservice.util.exception.NoRunningOrderExistsException;
 import com.businessgenie.runningorderservice.util.exception.RunningOrderAlreadyExistsException;
@@ -15,7 +17,10 @@ public interface RunningOrderService {
 
     public RunningOrder getRunningOrder(UUID uuid) throws RunningOrderNotExistsException;
 
-    public List<RunningOrder> getAllRunningOrdersForUser(String userId) throws NoRunningOrderExistsException;
+    public List<RunningModelUserDetailOutletDetailDTO> getAllRunningOrdersForUser(String userId, OrderType orderType) throws NoRunningOrderExistsException;
+
+    public List<RunningModelUserDetailOutletDetailDTO> getAllRunningOrdersForClient(String clientId) throws NoRunningOrderExistsException;
+    public List<RunningModelUserDetailOutletDetailDTO> getAllRunningOrdersInOutletSalePointNameForClient(String clientId, String outletName, String salePointName, String salePointType) throws NoRunningOrderExistsException;
 
     public RunningOrder updateRunningOrder(RunningOrder runningOrder) throws RunningOrderNotExistsException;
 

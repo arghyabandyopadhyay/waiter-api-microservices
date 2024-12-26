@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
+import com.businessgenie.runningorderservice.dto.RunningModelUserDetailOutletDetailDTO;
+
 import java.util.UUID;
 import java.time.LocalDateTime;
 
@@ -11,6 +14,44 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "running_order")
+@SqlResultSetMapping(
+    name = "RunningModelUserDetailOutletDetailDTOMapping",
+    classes = @ConstructorResult(
+        targetClass = RunningModelUserDetailOutletDetailDTO.class,
+        columns = {
+            @ColumnResult(name = "id", type = String.class),
+            @ColumnResult(name = "is_terminated", type = Boolean.class),
+            @ColumnResult(name = "name", type = String.class),
+            @ColumnResult(name = "mobile_no", type = String.class),
+            @ColumnResult(name = "sale_point_type", type = String.class),
+            @ColumnResult(name = "sale_point_name", type = String.class),
+            @ColumnResult(name = "amount", type = Double.class),
+            @ColumnResult(name = "pax", type = Integer.class),
+            @ColumnResult(name = "active_since", type = LocalDateTime.class),
+            @ColumnResult(name = "bill_printed", type = Boolean.class),
+            @ColumnResult(name = "outlet_name", type = String.class),
+            @ColumnResult(name = "outlet_id", type = String.class),
+            @ColumnResult(name = "waiter_mobile_no", type = String.class),
+            @ColumnResult(name = "waiter_name", type = String.class)
+        }
+    )
+)
+@NamedNativeQuery(
+    name = "RunningOrder.findRunningOrderByClientId", 
+    query = "SELECT running_order.id, is_terminated, running_order.name as name, mobile_no , sale_point_type, sale_point_name, amount, pax, active_since, bill_printed, outlet_name, outlet_id, mobile_number as waiter_mobile_no, Users.name as waiter_name FROM running_order INNER JOIN users On running_order.waiter_id=Users.id INNER JOIN Outlets ON running_order.outlet_id=Outlets.id WHERE running_order.client_id=:clientId AND is_terminated=0 ORDER BY active_since Desc",
+    resultSetMapping = "RunningModelUserDetailOutletDetailDTOMapping")
+@NamedNativeQuery(
+    name = "RunningOrder.findRunningOrderByClientIdOutletIdSalePointTypeAndSalePointName", 
+    query = "SELECT running_order.id, is_terminated, running_order.name as name, mobile_no , sale_point_type, sale_point_name, amount, pax, active_since, bill_printed, outlet_name, outlet_id, mobile_number as waiter_mobile_no, Users.name as waiter_name FROM running_order INNER JOIN users On running_order.waiter_id=Users.id INNER JOIN Outlets ON running_order.outlet_id=Outlets.id WHERE running_order.client_id=:clientId AND outlet_name=:outletName AND sale_point_type=:salePointType AND sale_point_name=:salePointName AND is_terminated=0 ORDER BY active_since Desc",
+    resultSetMapping = "RunningModelUserDetailOutletDetailDTOMapping")
+@NamedNativeQuery(
+    name = "RunningOrder.findRunningOrderByWaiterId", 
+    query = "SELECT running_order.id, is_terminated, running_order.name as name, mobile_no , sale_point_type, sale_point_name, amount, pax, active_since, bill_printed, outlet_name, outlet_id, mobile_number as waiter_mobile_no, Users.name as waiter_name FROM running_order INNER JOIN users On running_order.waiter_id=Users.id INNER JOIN Outlets ON running_order.outlet_id=Outlets.id WHERE waiter_id=:waiterId ORDER BY is_terminated Desc",
+    resultSetMapping = "RunningModelUserDetailOutletDetailDTOMapping")
+@NamedNativeQuery(
+    name = "RunningOrder.findRunningOrderByWaiterIdAndTerminationStatus", 
+    query = "SELECT running_order.id, is_terminated, running_order.name as name, mobile_no , sale_point_type, sale_point_name, amount, pax, active_since, bill_printed, outlet_name, outlet_id, mobile_number as waiter_mobile_no, Users.name as waiter_name FROM running_order INNER JOIN users On running_order.waiter_id=Users.id INNER JOIN Outlets ON running_order.outlet_id=Outlets.id WHERE waiter_id=:waiterId AND is_terminated=:isTerminated ORDER BY active_since Desc",
+    resultSetMapping = "RunningModelUserDetailOutletDetailDTOMapping")
 public class RunningOrder {
 
     @Id

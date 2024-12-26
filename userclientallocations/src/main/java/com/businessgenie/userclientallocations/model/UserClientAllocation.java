@@ -17,9 +17,9 @@ import java.util.UUID;
     classes = @ConstructorResult(
         targetClass = UserClientAllocationForUserDTO.class,
         columns = {
-            @ColumnResult(name = "id", type = UUID.class),
-            @ColumnResult(name = "outlet_id", type = UUID.class),
-            @ColumnResult(name = "client_id", type = UUID.class),
+            @ColumnResult(name = "id", type = String.class),
+            @ColumnResult(name = "outlet_id", type = String.class),
+            @ColumnResult(name = "client_id", type = String.class),
             @ColumnResult(name = "outlet_name", type = String.class),
             @ColumnResult(name = "outlet_sale_point", type = String.class),
             @ColumnResult(name = "client_name", type = String.class),

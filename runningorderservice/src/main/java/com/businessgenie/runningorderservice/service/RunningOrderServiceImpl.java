@@ -1,5 +1,7 @@
 package com.businessgenie.runningorderservice.service;
 
+import com.businessgenie.runningorderservice.constants.OrderType;
+import com.businessgenie.runningorderservice.dto.RunningModelUserDetailOutletDetailDTO;
 import com.businessgenie.runningorderservice.model.RunningOrder;
 import com.businessgenie.runningorderservice.repository.RunningOrderRepository;
 import com.businessgenie.runningorderservice.util.exception.RunningOrderAlreadyExistsException;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,8 +50,37 @@ public class RunningOrderServiceImpl implements RunningOrderService {
     }
 
     @Override
-    public List<RunningOrder> getAllRunningOrdersForUser(String userId) throws NoRunningOrderExistsException {
-        List<RunningOrder> runningOrders = runningOrderRepository.findByUserId(userId);
+    public List<RunningModelUserDetailOutletDetailDTO> getAllRunningOrdersForUser(String userId, OrderType orderType) throws NoRunningOrderExistsException {
+        List<RunningModelUserDetailOutletDetailDTO> runningOrders=new ArrayList<>();
+        switch (orderType) {
+            case Current:
+                runningOrders = runningOrderRepository.findRunningOrderByUserIdAndTerminationStatus(userId, false);
+                break;
+            case History:
+                runningOrders = runningOrderRepository.findRunningOrderByUserIdAndTerminationStatus(userId, true);
+                break;
+            case All:
+                runningOrders = runningOrderRepository.findByWaiterId(userId);
+                break;
+        }
+        if (runningOrders.isEmpty()) {
+            throw new NoRunningOrderExistsException();
+        }
+        return runningOrders;
+    }
+
+    @Override
+    public List<RunningModelUserDetailOutletDetailDTO> getAllRunningOrdersForClient(String clientId) throws NoRunningOrderExistsException {
+        List<RunningModelUserDetailOutletDetailDTO> runningOrders = runningOrderRepository.findByClientId(clientId);
+        if (runningOrders.isEmpty()) {
+            throw new NoRunningOrderExistsException();
+        }
+        return runningOrders;
+    }
+
+    @Override
+    public List<RunningModelUserDetailOutletDetailDTO> getAllRunningOrdersInOutletSalePointNameForClient(String clientId, String outletName, String salePointName, String salePointType) throws NoRunningOrderExistsException {
+        List<RunningModelUserDetailOutletDetailDTO> runningOrders = runningOrderRepository.findByClientIdOutletNameSalePointNameSalePointType(clientId, outletName, salePointName, salePointType);
         if (runningOrders.isEmpty()) {
             throw new NoRunningOrderExistsException();
         }

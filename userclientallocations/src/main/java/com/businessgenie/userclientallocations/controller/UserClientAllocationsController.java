@@ -1,5 +1,6 @@
 package com.businessgenie.userclientallocations.controller;
 
+import com.businessgenie.userclientallocations.dto.CustomUserClientAllocation;
 import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.service.UserClientAllocationsService;
@@ -39,8 +40,9 @@ public class UserClientAllocationsController {
         List<UserClientAllocationForUserDTO> userClientAllocations = null;
         try {
             userClientAllocations = userClientAllocationsService.getAllUserClientAllocationForUser(userId);
+            List<CustomUserClientAllocation> customUserClientAllocations=UserClientAllocationConverter.convertAndGroupByClientId(userClientAllocations);
 
-            return new ResponseEntity<>(UserClientAllocationConverter.convertAndGroupByClientId(userClientAllocations), HttpStatus.OK);
+            return new ResponseEntity<>(customUserClientAllocations, HttpStatus.OK);
         } catch (NoUserClientAllocationExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
