@@ -65,6 +65,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users createUser(Users users) throws UserAlreadyExistsException {
         if(usersRepository.findByEmailId(users.getEmailId())!=null) throw new UserAlreadyExistsException();
+        else if(usersRepository.findByMobileNumber(users.getMobileNumber())!=null) throw new UserAlreadyExistsException();
         else {
             users.setLastLogin(LocalDateTime.now());
             return usersRepository.save(users);
