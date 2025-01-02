@@ -1,5 +1,6 @@
 package com.businessgenie.menugroupservice.controller;
 
+import com.businessgenie.menugroupservice.dto.MenuGroupDTO;
 import com.businessgenie.menugroupservice.model.MenuGroup;
 import com.businessgenie.menugroupservice.service.MenuGroupService;
 import com.businessgenie.menugroupservice.util.exception.NoMenuGroupExistsException;
@@ -41,16 +42,28 @@ public class MenuGroupController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/outlet/{id}")
-    public ResponseEntity<?> getByOutletId(@PathVariable("id") String id) {
-        List<MenuGroup> menuGroups = null;
+    @GetMapping("/outlet/{outletId}")
+    public ResponseEntity<?> getByOutletId(@PathVariable("outletId") String outletId) {
+        List<MenuGroupDTO> menuGroups = null;
         try {
-            menuGroups = menuGroupService.getAllMenuGroupForOutlet(id);
+            menuGroups = menuGroupService.getAllMenuGroupForOutlet(outletId);
             return new ResponseEntity<>(menuGroups, HttpStatus.OK);
         } catch (NoMenuGroupExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<?> getByClientId(@PathVariable("clientId") String clientId) {
+        List<MenuGroupDTO> menuGroups = null;
+        try {
+            menuGroups = menuGroupService.getAllMenuGroupForClient(clientId);
+            return new ResponseEntity<>(menuGroups, HttpStatus.OK);
+        } catch (NoMenuGroupExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMenuGroup(@PathVariable("id") UUID id){
         try {

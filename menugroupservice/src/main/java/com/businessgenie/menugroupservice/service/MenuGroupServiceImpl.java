@@ -1,5 +1,6 @@
 package com.businessgenie.menugroupservice.service;
 
+import com.businessgenie.menugroupservice.dto.MenuGroupDTO;
 import com.businessgenie.menugroupservice.model.MenuGroup;
 import com.businessgenie.menugroupservice.repository.MenuGroupRepository;
 import com.businessgenie.menugroupservice.util.exception.MenuGroupAlreadyExistsException;
@@ -57,8 +58,14 @@ public class MenuGroupServiceImpl implements MenuGroupService {
 
 
     @Override
-    public List<MenuGroup> getAllMenuGroupForOutlet(String outletId)
+    public List<MenuGroupDTO> getAllMenuGroupForOutlet(String outletId)
             throws NoMenuGroupExistsException {
                 return menuGroupRepository.findByOutletId(outletId);
+            }
+
+    @Override
+    public List<MenuGroupDTO> getAllMenuGroupForClient(String clientId)
+            throws NoMenuGroupExistsException {
+                return menuGroupRepository.findByClientId(clientId);
             }
 }

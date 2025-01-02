@@ -1,5 +1,6 @@
 package com.businessgenie.menuservice.service;
 
+import com.businessgenie.menuservice.dto.MenuItemDTO;
 import com.businessgenie.menuservice.model.MenuItem;
 import com.businessgenie.menuservice.repository.MenuItemRepository;
 import com.businessgenie.menuservice.util.exception.MenuItemAlreadyExistsException; 
@@ -57,8 +58,20 @@ public class MenuItemServiceImpl implements MenuItemService {
 
 
     @Override
-    public List<MenuItem> getAllMenuItemForOutlet(String outletId)throws NoMenuItemExistsException 
+    public List<MenuItemDTO> getAllMenuItemForOutlet(String outletId)throws NoMenuItemExistsException 
     {
         return menuItemRepository.findByOutletId(outletId);
+    }
+
+    @Override
+    public List<MenuItemDTO> getAllMenuItemForClient(String clientId)throws NoMenuItemExistsException 
+    {
+        return menuItemRepository.findByClientId(clientId);
+    }
+
+    @Override
+    public List<MenuItemDTO> getAllMenuItemForUser(String outletId, String userId)throws NoMenuItemExistsException 
+    {
+        return menuItemRepository.findByUserId(outletId,userId);
     }
 }
