@@ -47,8 +47,8 @@ public class TaxClassServiceImpl implements TaxClassService {
     }
 
     @Override
-    public List<TaxClass> getAllTaxClassesForUser(String userId) throws NoTaxClassExistsException {
-        List<TaxClass> taxClasses = taxClassRepository.findByUserId(userId);
+    public List<TaxClass> getAllTaxClassForClient(String clientId) throws NoTaxClassExistsException {
+        List<TaxClass> taxClasses = taxClassRepository.findByClientId(clientId);
         if (taxClasses.isEmpty()) {
             throw new NoTaxClassExistsException();
         }

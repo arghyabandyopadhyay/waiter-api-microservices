@@ -42,12 +42,12 @@ public class TaxClassController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getAllTaxClassesForUser(@PathVariable("userId") String userId) {
-        List<TaxClass> userClientAllocations = null;
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<?> getAllTaxClassesForClient(@PathVariable("clientId") String clientId) {
+        List<TaxClass> taxClasses = null;
         try {
-            userClientAllocations = taxClassService.getAllTaxClassesForUser(userId);
-            return new ResponseEntity<>(userClientAllocations, HttpStatus.OK);
+            taxClasses = taxClassService.getAllTaxClassForClient(clientId);
+            return new ResponseEntity<>(taxClasses, HttpStatus.OK);
         } catch (NoTaxClassExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

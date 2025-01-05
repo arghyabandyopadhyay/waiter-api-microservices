@@ -16,7 +16,7 @@ public interface TaxClassService {
 
     public TaxClass getTaxClass(UUID uuid) throws TaxClassNotExistsException;
 
-    public List<TaxClass> getAllTaxClassesForUser(String userId) throws NoTaxClassExistsException;
+    public List<TaxClass> getAllTaxClassForClient(String clientId) throws NoTaxClassExistsException;
 
     public TaxClass updateTaxClass(TaxClass taxClass) throws TaxClassNotExistsException;
 

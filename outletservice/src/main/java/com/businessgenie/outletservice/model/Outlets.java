@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 @Getter
@@ -16,6 +19,7 @@ public class Outlets {
     @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(name = "id", updatable = false, length = 255, nullable = false)
+    @JsonProperty("outletId")
     private UUID id;
 
     @Column(name = "outlet_name", length = 255, nullable = false)
