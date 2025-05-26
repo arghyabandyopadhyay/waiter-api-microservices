@@ -26,6 +26,16 @@ public class MaxTakeAway {
     @Column(name = "last_take_away", nullable = false)
     private int lastTakeAway;
 
-    @Column(name = "current_date")
-    private Date currentDate;
+    @Column(name = "date_of_scope", nullable = false)
+    private Date dateOfScope;
+
+    @Override
+    public String toString() {
+        return "MaxTakeAway{" +
+                "id=" + id +
+                ", outletId='" + outletId + '\'' +
+                ", lastTakeAway=" + lastTakeAway +
+                ", currentDate=" + dateOfScope +
+                '}';
+    }
 }

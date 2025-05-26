@@ -6,15 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.UUID;
 
 public interface MaxTakeAwayRepository extends JpaRepository<MaxTakeAway, UUID> {
-    @Query(value = "SELECT * FROM user_client_allocation WHERE user_id = :userId",
+    @Query(value = "SELECT * FROM max_take_away WHERE outlet_id = :outlet_id AND date_of_scope = :date_of_scope",
             nativeQuery = true)
-    List<MaxTakeAway> findByUserId(@Param("userId") String userId);
-
-    @Query(value = "SELECT * FROM max_take_away WHERE outlet_id = :outlet_id AND current_date = :current_date",
-            nativeQuery = true)
-    MaxTakeAway findMaxTakeAway(@Param("outlet_id") String outletId, @Param("current_date") Date currentDate);
+    MaxTakeAway findMaxTakeAway(@Param("outlet_id") String outletId, @Param("date_of_scope") Date currentDate);
 }

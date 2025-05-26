@@ -1,5 +1,6 @@
 package com.businessgenie.userclientallocations.controller;
 
+import com.businessgenie.userclientallocations.dto.ClientUserAllocationDTO;
 import com.businessgenie.userclientallocations.dto.CustomUserClientAllocation;
 import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
@@ -25,7 +26,7 @@ public class UserClientAllocationsController {
     UserClientAllocationsService userClientAllocationsService;
 
     @GetMapping("/")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAllUserClientAllocations() {
         List<UserClientAllocation> users = null;
         try {
             users = userClientAllocationsService.getAllUserClientAllocations();
@@ -36,13 +37,24 @@ public class UserClientAllocationsController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable("userId") String userId) {
+    public ResponseEntity<?> getUserClientAllocationsForUser(@PathVariable("userId") String userId) {
         List<UserClientAllocationForUserDTO> userClientAllocations = null;
         try {
             userClientAllocations = userClientAllocationsService.getAllUserClientAllocationForUser(userId);
             List<CustomUserClientAllocation> customUserClientAllocations=UserClientAllocationConverter.convertAndGroupByClientId(userClientAllocations);
 
             return new ResponseEntity<>(customUserClientAllocations, HttpStatus.OK);
+        } catch (NoUserClientAllocationExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<?> getUserClientAllocationsForClients(@PathVariable("clientId") String clientId) {
+        List<ClientUserAllocationDTO> userClientAllocations = null;
+        try {
+            userClientAllocations = userClientAllocationsService.getAllUserClientAllocationForClient(clientId);
+            return new ResponseEntity<>(userClientAllocations, HttpStatus.OK);
         } catch (NoUserClientAllocationExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

@@ -8,7 +8,7 @@ import com.businessgenie.maxtakeawayservice.util.exception.MaxTakeAwayNotExistsE
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class MaxTakeAwayServiceImpl implements MaxTakeAwayService {
 
     @Override
     public MaxTakeAway updateMaxTakeAway(MaxTakeAway maxTakeAway) throws MaxTakeAwayNotExistsException {
-        if(maxTakeAwayRepository.existsById(maxTakeAway.getId())) return maxTakeAwayRepository.save(maxTakeAway);
+        if(maxTakeAwayRepository.existsById(maxTakeAway.getId())) return maxTakeAwayRepository.saveAndFlush(maxTakeAway);
         else throw new MaxTakeAwayNotExistsException();
     }
 
@@ -46,11 +46,29 @@ public class MaxTakeAwayServiceImpl implements MaxTakeAwayService {
         return maxTakeAwayRepository.findById(uuid).orElseThrow(MaxTakeAwayNotExistsException::new);
     }
 
+    @Override
+    public int getMaxTakeAwayForOutlet(String outletId,Date currentDate) throws MaxTakeAwayNotExistsException, MaxTakeAwayAlreadyExistsException {
+        MaxTakeAway maxTakeAway = maxTakeAwayRepository.findMaxTakeAway(outletId,currentDate);
+        if(maxTakeAway == null) {
+            MaxTakeAway newMaxTakeAway = new MaxTakeAway();
+            newMaxTakeAway.setOutletId(outletId);
+            newMaxTakeAway.setLastTakeAway(1);
+            newMaxTakeAway.setDateOfScope(currentDate);
+            maxTakeAwayRepository.save(newMaxTakeAway);
+            return 1;
+        }
+        else{
+            maxTakeAway.setLastTakeAway(maxTakeAway.getLastTakeAway()+1);
+            updateMaxTakeAway(maxTakeAway);
+            return maxTakeAway.getLastTakeAway()+1;
+        }    
+    }
+
 
     @Override
     public MaxTakeAway createMaxTakeAway(MaxTakeAway maxTakeAway)
             throws MaxTakeAwayAlreadyExistsException {
-        if(maxTakeAwayRepository.findMaxTakeAway(maxTakeAway.getOutletId(), maxTakeAway.getCurrentDate()) == null)
+        if(maxTakeAwayRepository.findMaxTakeAway(maxTakeAway.getOutletId(), maxTakeAway.getDateOfScope()) == null)
             return maxTakeAwayRepository.save(maxTakeAway);
         else throw new MaxTakeAwayAlreadyExistsException();
     }

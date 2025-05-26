@@ -41,10 +41,11 @@ import java.util.UUID;
 )
 @NamedNativeQuery(
     name = "MenuItem.findByOutletId",
-    query = "SELECT menu_item.id, item_image, item, item_description, comment_for_kot, menu_group.id as stock_group_id, rate_before_discount, discount, rate, tax_class_id, is_discountable, is_veg, tax_rate, tags, menu_item.client_id, favourite, image_url, stock_group " +
+    query = "SELECT menu_item.id, item_image, item, item_description, comment_for_kot, menu_group.id as stock_group_id, rate_before_discount, discount, rate, tax_class_id, is_discountable, is_veg, tax_rate, tags, menu_item.client_id, favourite, image_url, stock_group, outlets.id as outlet_id, outlet_name  " +
             "FROM menu_item " +
             "INNER JOIN menu_group ON menu_item.stock_group_id = menu_group.id " +
             "INNER JOIN tax_class ON menu_item.tax_class_id = tax_class.id " +
+            "INNER JOIN outlets ON menu_item.outlet_id = outlets.id " +
             "WHERE menu_item.outlet_id = :outlet_id",
     resultSetMapping = "MenuItemDTOMapping"
 )
@@ -60,10 +61,11 @@ import java.util.UUID;
 )
 @NamedNativeQuery(
     name = "MenuItem.findByUserId",
-    query = "SELECT menu_item.id, item_image, item, item_description, comment_for_kot, menu_group.id as stock_group_id, rate_before_discount, discount, rate, tax_class_id, is_discountable, is_veg, tax_rate, tags, menu_item.client_id, IF((menu_item.id in (SELECT menu_id FROM favourites WHERE user_id = :user_id)), 1, 0) AS favourite, image_url, stock_group " +
+    query = "SELECT menu_item.id, item_image, item, item_description, comment_for_kot, menu_group.id as stock_group_id, rate_before_discount, discount, rate, tax_class_id, is_discountable, is_veg, tax_rate, tags, menu_item.client_id, IF((menu_item.id in (SELECT menu_id FROM favourites WHERE user_id = :user_id)), 1, 0) AS favourite, image_url, stock_group, outlets.id as outlet_id, outlet_name  " +
             "FROM menu_item " +
             "INNER JOIN menu_group ON menu_item.stock_group_id = menu_group.id " +
             "INNER JOIN tax_class ON menu_item.tax_class_id = tax_class.id " +
+            "INNER JOIN outlets ON menu_item.outlet_id = outlets.id " +
             "WHERE menu_item.outlet_id = :outlet_id",
     resultSetMapping = "MenuItemDTOMapping"
 )

@@ -11,6 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +43,21 @@ public class MaxTakeAwayController {
             return new ResponseEntity<>(maxTakeAway, HttpStatus.OK);
         } catch (MaxTakeAwayNotExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/outlet/{outletId}/currentdate/{currentDate}")
+    public ResponseEntity<?> getMaxTakeAwayForOutlet(@PathVariable("outletId") String outletId,@PathVariable("currentDate") String currentDate) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(currentDate,formatter);
+                int maxTakeAway = maxTakeAwayService.getMaxTakeAwayForOutlet(outletId, java.sql.Date.valueOf(date));
+                return new ResponseEntity<>(maxTakeAway, HttpStatus.OK);
+        } catch (MaxTakeAwayNotExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (MaxTakeAwayAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }catch (DateTimeException e) {
+            return new ResponseEntity<>("Invalid date format", HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/{id}")

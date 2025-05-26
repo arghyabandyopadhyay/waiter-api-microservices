@@ -1,5 +1,6 @@
 package com.businessgenie.userclientallocations.service;
 
+import com.businessgenie.userclientallocations.dto.ClientUserAllocationDTO;
 import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
 import com.businessgenie.userclientallocations.model.UserClientAllocation;
 import com.businessgenie.userclientallocations.repository.UserClientAllocationsRepository;
@@ -61,5 +62,12 @@ public class UserClientAllocationsServiceImpl implements UserClientAllocationsSe
     public List<UserClientAllocationForUserDTO> getAllUserClientAllocationForUser(String userId)
             throws NoUserClientAllocationExistsException {
                 return userClientAllocationsRepository.findByUserId(userId);
+            }
+
+
+    @Override
+    public List<ClientUserAllocationDTO> getAllUserClientAllocationForClient(String clientId)
+            throws NoUserClientAllocationExistsException {
+                return userClientAllocationsRepository.findByClientId(clientId);
             }
 }
