@@ -1,0 +1,93 @@
+package com.businessgenie.userclientallocations.controller;
+
+import com.businessgenie.userclientallocations.dto.ClientUserAllocationDTO;
+import com.businessgenie.userclientallocations.dto.CustomUserClientAllocation;
+import com.businessgenie.userclientallocations.dto.UserClientAllocationForUserDTO;
+import com.businessgenie.userclientallocations.model.UserClientAllocation;
+import com.businessgenie.userclientallocations.service.UserClientAllocationsService;
+import com.businessgenie.userclientallocations.util.UserClientAllocationConverter;
+import com.businessgenie.userclientallocations.util.exception.NoUserClientAllocationExistsException;
+import com.businessgenie.userclientallocations.util.exception.UserClientAllocationAlreadyExistsException;
+import com.businessgenie.userclientallocations.util.exception.UserClientAllocationNotExistsException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+// @CrossOrigin(origins = "http://localhost:4200/")
+@RequestMapping("api/v1/userclientallocations")
+public class UserClientAllocationsController {
+    @Autowired
+    UserClientAllocationsService userClientAllocationsService;
+
+    @GetMapping("/")
+    public ResponseEntity<?> getAllUserClientAllocations() {
+        List<UserClientAllocation> users = null;
+        try {
+            users = userClientAllocationsService.getAllUserClientAllocations();
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (NoUserClientAllocationExistsException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getUserClientAllocationsForUser(@PathVariable("userId") String userId) {
+        List<UserClientAllocationForUserDTO> userClientAllocations = null;
+        try {
+            userClientAllocations = userClientAllocationsService.getAllUserClientAllocationForUser(userId);
+            List<CustomUserClientAllocation> customUserClientAllocations=UserClientAllocationConverter.convertAndGroupByClientId(userClientAllocations);
+
+            return new ResponseEntity<>(customUserClientAllocations, HttpStatus.OK);
+        } catch (NoUserClientAllocationExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<?> getUserClientAllocationsForClients(@PathVariable("clientId") String clientId) {
+        List<ClientUserAllocationDTO> userClientAllocations = null;
+        try {
+            userClientAllocations = userClientAllocationsService.getAllUserClientAllocationForClient(clientId);
+            return new ResponseEntity<>(userClientAllocations, HttpStatus.OK);
+        } catch (NoUserClientAllocationExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") UUID id){
+        try {
+            userClientAllocationsService.deleteUserClientAllocation(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UserClientAllocationNotExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @PostMapping("/")
+    public ResponseEntity<?> createUserClientAllocation(@RequestBody() UserClientAllocation userClientAllocation){
+        try {
+            UserClientAllocation newUserClientAllocation = userClientAllocationsService.createUserClientAllocation(userClientAllocation);
+            return new ResponseEntity<>(newUserClientAllocation,HttpStatus.OK);
+        } catch (UserClientAllocationAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> putUserClientAllocation(@RequestBody() UserClientAllocation userClientAllocation){
+        try {
+            UserClientAllocation upldatedUserClientAllocation = userClientAllocationsService.updateUserClientAllocation(userClientAllocation);
+            return new ResponseEntity<>(upldatedUserClientAllocation,HttpStatus.OK);
+        } catch (UserClientAllocationNotExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+}
+

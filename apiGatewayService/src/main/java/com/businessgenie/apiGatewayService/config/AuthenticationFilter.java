@@ -37,7 +37,7 @@ public class AuthenticationFilter implements GatewayFilter {
             if (jwtUtil.isInvalid(token))
                 return this.onError(exchange, "Authorization header is invalid");
 
-            this.populateRequestWithHeaders(exchange, token);
+            // this.populateRequestWithHeaders(exchange, token);
         }
         return chain.filter(exchange);
     }
@@ -48,6 +48,7 @@ public class AuthenticationFilter implements GatewayFilter {
     private Mono<Void> onError(ServerWebExchange exchange, String err) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        System.out.println(err);
         return response.setComplete();
     }
 
@@ -59,11 +60,11 @@ public class AuthenticationFilter implements GatewayFilter {
         return !request.getHeaders().containsKey("Authorization");
     }
 
-    private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
-        Claims claims = jwtUtil.getAllClaimsFromToken(token);
-        exchange.getRequest().mutate()
-                .header("id", String.valueOf(claims.get("id")))
-                .header("role", String.valueOf(claims.get("role")))
-                .build();
-    }
+    // private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
+    //     Claims claims = jwtUtil.getAllClaimsFromToken(token);
+    //     exchange.getRequest().mutate()
+    //             .header("userId", String.valueOf(claims.get("id")))
+    //             .header("userRole", String.valueOf(claims.get("role")))
+    //             .build();
+    // }
 }
